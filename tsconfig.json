@@ -1,6 +1,6 @@
 {    
     // tsconfig.base.json
-    "include": ["src/**/*.js"],
+    "include": ["esm/**/*.js"],
     "compilerOptions": {
       "noEmit": true,
     //   "emitDeclarationOnly": true,
