@@ -15,4 +15,4 @@
  * Real ESM is lexical Scoped and Static Analyzeable by default. 
  */
 
-export * from 'src/rollup.config.js';
+export * from 'esm/rollup.config.js';

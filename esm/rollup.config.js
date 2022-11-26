@@ -23,35 +23,34 @@
 // Algin Node ESM with Browser ESM
 import * as url from 'node:url';
 const importMetaUrl = import.meta.url;
-
+import virtual from '@rollup/plugin-virtual';
 const __dirname = url.fileURLToPath(new URL('.', importMetaUrl));
+
+const puppeteerBase = `${__dirname}/node_modules/puppeteer-core/lib/*`;
+    
+// const dirEntrysPuppeteerBase = (await readDir(puppeteerBase, { rescursive: true })).flatMap(x=>x);
+// const thirdPartyPath = puppeteerBase.replace('*', 'esm/third_party/');
+// const dirEntrysthirdParty = dirEntrysPuppeteerBase.filter(entry => entry.startsWith(thirdPartyPath));; 
+// // this.emitFile({ fileName: jsFile, type: "chunk" output: {file: jsFile, format: outputType},  plugins: [resolve()],   });   }
+// const jsEntrys = dirEntrysPuppeteerBase.filter(entry => entry.endsWith(".js"));
+// // configs.push({ input: typesFile, output: {file: typesFile, format: outputType}, plugins: [dts({respectExternal: true})],  });
+// const dtsEntrys = dirEntrysPuppeteerBase.filter(entry => entry.endsWith(".d.ts"));
+
+const puppeteerResolve = puppeteerBase.replace('*', 'esm/puppeteer/*.js');
+
+const puppeteerCore = ['revisions', 'common/Puppeteer', 'common/common', 'api/api', 'util/util'];
+// const puppeteerNode = ['node/node', 'node/PuppeteerNode'];
+
+
+
 //TODO: iife build injected as generated injected
+/** @type {import('rollup').RollupOptions[]} */
 const rollupConfig = [{ 
-  input: [""],
+  input: ['rollup-core-esm'],
   output: { format: 'esm', dir: '.' },
-  plugins: [{ async buildStart() {
-    const puppeteerBase = `${__dirname}/node_modules/puppeteer-core/lib/*`;
-    
-    // const dirEntrysPuppeteerBase = (await readDir(puppeteerBase, { rescursive: true })).flatMap(x=>x);
-    // const thirdPartyPath = puppeteerBase.replace('*', 'esm/third_party/');
-    // const dirEntrysthirdParty = dirEntrysPuppeteerBase.filter(entry => entry.startsWith(thirdPartyPath));; 
-    // // this.emitFile({ fileName: jsFile, type: "chunk" output: {file: jsFile, format: outputType},  plugins: [resolve()],   });   }
-    // const jsEntrys = dirEntrysPuppeteerBase.filter(entry => entry.endsWith(".js"));
-    // // configs.push({ input: typesFile, output: {file: typesFile, format: outputType}, plugins: [dts({respectExternal: true})],  });
-    // const dtsEntrys = dirEntrysPuppeteerBase.filter(entry => entry.endsWith(".d.ts"));
-    
-    const puppeteerResolve = puppeteerBase.replace('*', 'esm/puppeteer/*.js');
-    
-    const puppeteerCore = ['revisions', 'common/Puppeteer', 'common/common', 'api/api', 'util/util'];
-    const puppeteerNode = ['node/node', 'node/PuppeteerNode'];
-    
-    for (const importSpecifier of puppeteerCore) {
-      this.emitFile({ type: "chunk", fileName: puppeteerResolve.replace('*', importSpecifier) });
-    }
-    
-  // TODO: Finish emit entrypoint.  
-  this.emitFile({ type: 'chunk', name: 'puppeteer-esm',
-    content: `export * from 'puppeteer-core/lib/esm/puppeteer/common/common.js';
+  plugins: [
+    virtual({
+      'rollup-core-esm': `export * from 'puppeteer-core/lib/esm/puppeteer/common/common.js';
 export { PUPPETEER_REVISIONS }
 export * from 'puppeteer-core/lib/esm/puppeteer/util/util.js';
 
@@ -77,8 +76,19 @@ export * from 'puppeteer-core/lib/esm/puppeteer/util/util.js';
 /**
  * @deprecated Use the query handler API defined on {@link Puppeteer}
  */
-export * from 'puppeteer-core/lib/esm/puppeteer/common/QueryHandler.js';` });  
-  }}],
+export * from 'puppeteer-core/lib/esm/puppeteer/common/QueryHandler.js';`,
+    }),
+    { "name": "emitPuppeteerCore",
+      async buildStart() {
+    
+      for (const importSpecifier of puppeteerCore) {
+        this.emitFile({ type: "chunk", id: puppeteerResolve.replace('*', importSpecifier) });
+      }
+      
+      // TODO: Finish emit entrypoint.  
+      //this.emitFile({ type: 'chunk', id: 'puppeteer-core-esm' });  
+    },
+}],
 }];
 // Rollup core package definition
 

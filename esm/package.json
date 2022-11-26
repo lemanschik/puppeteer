@@ -8,24 +8,8 @@
     "headless",
     "automation"
   ],
-  "type": "commonjs",
-  "main": "./lib/cjs/puppeteer/puppeteer-core.js",
-  "types": "./lib/types.d.ts",
-  "exports": {
-    ".": {
-      "types": "./lib/types.d.ts",
-      "import": "./lib/esm/puppeteer/puppeteer-core.js",
-      "require": "./lib/cjs/puppeteer/puppeteer-core.js"
-    },
-    "./internal/*": {
-      "import": "./lib/esm/puppeteer/*",
-      "require": "./lib/cjs/puppeteer/*"
-    },
-    "./*": {
-      "import": "./*",
-      "require": "./*"
-    }
-  },
+  "type": "module",
+  "main": "./puppeteer-core.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/puppeteer/puppeteer/tree/main/packages/puppeteer-core"
@@ -34,16 +18,12 @@
     "node": ">=14.1.0"
   },
   "scripts": {
-    "build:third_party": "wireit",
-    "build:tsc": "wireit",
-    "build:types": "wireit",
-    "build": "wireit",
+    "build": "rollup -c",
     "check": "tsx tools/ensure-correct-devtools-protocol-package",
-    "clean": "tsc -b --clean && rimraf lib src/generated",
-    "format:types": "wireit",
-    "generate:package-json": "wireit",
-    "generate:sources": "wireit",
-    "prepack": "wireit"
+    "//format:types": "wireit",
+    "//generate:package-json": "wireit",
+    "//generate:sources": "wireit",
+    "//prepack": "wireit"
   },
   "wireit": {
     "prepack": {
@@ -161,6 +141,9 @@
     "ws": "8.10.0"
   },
   "devDependencies": {
-    "wireit": "^0.8.0"
+    "rollup": "^3.4.0",
+    "rollup-plugin-dts": "^5.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-virtual": "^3.0.1"
   }
 }
