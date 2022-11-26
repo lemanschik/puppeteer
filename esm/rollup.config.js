@@ -110,59 +110,60 @@ const createNoneNeededWarnings = [
 ' 🏃 [generate:sources] Running command "tsx tools/generate_sources.ts"',
 
 
-// lib/cjs/third_party/mitt/index.js → lib/cjs/third_party/mitt/index.js...
-// (!) Entry module "lib/cjs/third_party/mitt/index.js" is implicitly using "default" export mode, which means for CommonJS output that its default export is assigned to "module.exports". For many tools, such CommonJS output will not be interchangeable with the original ES module. If this is intended, explicitly set "output.exports" to either "auto" or "default", otherwise you might want to consider changing the signature of "lib/cjs/third_party/mitt/index.js" to use named exports only.
-// https://rollupjs.org/guide/en/#outputexports
-// lib/cjs/third_party/mitt/index.js
-// created lib/cjs/third_party/mitt/index.js in 56ms
+`lib/cjs/third_party/mitt/index.js → lib/cjs/third_party/mitt/index.js...`,
+`(!) Entry module "lib/cjs/third_party/mitt/index.js" is implicitly using "default" export mode, which means for CommonJS output that its default export is assigned to "module.exports". For many tools, such CommonJS output will not be interchangeable with the original ES module. If this is intended, explicitly set "output.exports" to either "auto" or "default", otherwise you might want to consider changing the signature of "lib/cjs/third_party/mitt/index.js" to use named exports only.`,
+`https://rollupjs.org/guide/en/#outputexports`,
+`lib/cjs/third_party/mitt/index.js`,
+`created lib/cjs/third_party/mitt/index.js in 56ms`,
 
-// lib/cjs/third_party/mitt/index.d.ts → lib/cjs/third_party/mitt/index.d.ts...
-// created lib/cjs/third_party/mitt/index.d.ts in 53ms
+`lib/cjs/third_party/mitt/index.d.ts → lib/cjs/third_party/mitt/index.d.ts...`,
+`created lib/cjs/third_party/mitt/index.d.ts in 53ms`,
 
-// lib/esm/third_party/mitt/index.js → lib/esm/third_party/mitt/index.js...
-// created lib/esm/third_party/mitt/index.js in 13ms
+`lib/esm/third_party/mitt/index.js → lib/esm/third_party/mitt/index.js...`,
+`created lib/esm/third_party/mitt/index.js in 13ms`,
 
-// lib/esm/third_party/mitt/index.d.ts → lib/esm/third_party/mitt/index.d.ts...
-// created lib/esm/third_party/mitt/index.d.ts in 22ms
-// ✅ [build:third_party] Executed successfully
+`lib/esm/third_party/mitt/index.d.ts → lib/esm/third_party/mitt/index.d.ts...`,
+`created lib/esm/third_party/mitt/index.d.ts in 22ms`,
+`✅ [build:third_party] Executed successfully`,
 
-// api-extractor 7.31.2  - https://api-extractor.com/
+`api-extractor 7.31.2  - https://api-extractor.com/`,
 
-// Using configuration from ./api-extractor.json
-// Analysis will use the bundled TypeScript version 4.7.4
-// *** The target project appears to use TypeScript 4.8.3 which is newer than the bundled compiler engine; consider upgrading API Extractor.
-// Warning: lib/esm/third_party/mitt/index.d.ts:1:1 - (ae-missing-release-tag) "EventType" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-// Warning: lib/esm/third_party/mitt/index.d.ts:2:1 - (ae-missing-release-tag) "Handler" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-// Warning: src/api/Page.ts:1133:9 - (ae-unresolved-link) The @link reference could not be resolved: The reference is ambiguous because "addStyleTag" has more than one declaration; you need to add a TSDoc member reference selector
-// Warning: src/common/Errors.ts:57:3 - (ae-setter-with-docs) The doc comment for the property "code" must appear on the getter, not the setter.
-// Warning: src/common/Errors.ts:70:3 - (ae-setter-with-docs) The doc comment for the property "originalMessage" must appear on the getter, not the setter.
-// Warning: src/common/HTTPRequest.ts:164:3 - (ae-forgotten-export) The symbol "CDPSession_3" needs to be exported by the entry point puppeteer-core.d.ts
-// Warning: src/common/HTTPResponse.ts:65:3 - (ae-forgotten-export) The symbol "CDPSession_2" needs to be exported by the entry point puppeteer-core.d.ts
-// Warning: src/common/NetworkManager.ts:76:49 - (ae-forgotten-export) The symbol "FrameManager_2" needs to be exported by the entry point puppeteer-core.d.ts
-// Warning: src/common/QueryHandler.ts:31:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "Node"
-// Warning: src/common/QueryHandler.ts:31:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "node"
-// Warning: src/common/QueryHandler.ts:35:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "Node"
-// Warning: src/common/QueryHandler.ts:35:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "node"
-// Warning: src/common/QueryHandler.ts:45:3 - (ae-forgotten-export) The symbol "PuppeteerUtil" needs to be exported by the entry point puppeteer-core.d.ts
-// Warning: src/common/QueryHandler.ts:45:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "Node"
-// Warning: src/common/QueryHandler.ts:45:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "node"
-// Warning: src/common/QueryHandler.ts:53:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "Node"
-// Warning: src/common/QueryHandler.ts:53:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "node"
-// Warning: src/common/QueryHandler.ts:69:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "Window"
-// Warning: src/common/QueryHandler.ts:78:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "Window"
-// Warning: src/common/types.ts:70:1 - (ae-forgotten-export) The symbol "TypeSelectorOfComplexSelector" needs to be exported by the entry point puppeteer-core.d.ts
-// Warning: src/node/BrowserRunner.ts:249:9 - (ae-forgotten-export) The symbol "Connection_2" needs to be exported by the entry point puppeteer-core.d.ts
-// Warning: src/puppeteer-core.ts:40:3 - (ae-missing-release-tag) "connect" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-// Warning: src/puppeteer-core.ts:41:3 - (ae-missing-release-tag) "createBrowserFetcher" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-// Warning: src/puppeteer-core.ts:42:3 - (ae-missing-release-tag) "defaultArgs" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-// Warning: src/puppeteer-core.ts:43:3 - (ae-missing-release-tag) "executablePath" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
-// Warning: src/puppeteer-core.ts:44:3 - (ae-missing-release-tag) "launch" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)
+`Using configuration from ./api-extractor.json`,
+`Analysis will use the bundled TypeScript version 4.7.4`,
+// TODO: Make warnings red so that they are more anyoing maybe use some special c 0 chars 
+`*** The target project appears to use TypeScript 4.8.3 which is newer than the bundled compiler engine; consider upgrading API Extractor.`,
+`Warning: lib/esm/third_party/mitt/index.d.ts:1:1 - (ae-missing-release-tag) "EventType" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)`,
+`Warning: lib/esm/third_party/mitt/index.d.ts:2:1 - (ae-missing-release-tag) "Handler" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)`,
+`Warning: src/api/Page.ts:1133:9 - (ae-unresolved-link) The @link reference could not be resolved: The reference is ambiguous because "addStyleTag" has more than one declaration; you need to add a TSDoc member reference selector`,
+`Warning: src/common/Errors.ts:57:3 - (ae-setter-with-docs) The doc comment for the property "code" must appear on the getter, not the setter.`,
+`Warning: src/common/Errors.ts:70:3 - (ae-setter-with-docs) The doc comment for the property "originalMessage" must appear on the getter, not the setter.`,
+`Warning: src/common/HTTPRequest.ts:164:3 - (ae-forgotten-export) The symbol "CDPSession_3" needs to be exported by the entry point puppeteer-core.d.ts`,
+`Warning: src/common/HTTPResponse.ts:65:3 - (ae-forgotten-export) The symbol "CDPSession_2" needs to be exported by the entry point puppeteer-core.d.ts`,
+`Warning: src/common/NetworkManager.ts:76:49 - (ae-forgotten-export) The symbol "FrameManager_2" needs to be exported by the entry point puppeteer-core.d.ts`,
+`Warning: src/common/QueryHandler.ts:31:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "Node"`,
+`Warning: src/common/QueryHandler.ts:31:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "node"`,
+`Warning: src/common/QueryHandler.ts:35:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "Node"`,
+`Warning: src/common/QueryHandler.ts:35:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "node"`,
+`Warning: src/common/QueryHandler.ts:45:3 - (ae-forgotten-export) The symbol "PuppeteerUtil" needs to be exported by the entry point puppeteer-core.d.ts`,
+`Warning: src/common/QueryHandler.ts:45:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "Node"`,
+`Warning: src/common/QueryHandler.ts:45:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "node"`,
+`Warning: src/common/QueryHandler.ts:53:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "Node"`,
+`Warning: src/common/QueryHandler.ts:53:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "node"`,
+`Warning: src/common/QueryHandler.ts:69:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "Window"`,
+`Warning: src/common/QueryHandler.ts:78:3 - (ae-unresolved-link) The @link reference could not be resolved: The package "puppeteer-core" does not have an export "Window"`,
+`Warning: src/common/types.ts:70:1 - (ae-forgotten-export) The symbol "TypeSelectorOfComplexSelector" needs to be exported by the entry point puppeteer-core.d.ts`,
+`Warning: src/node/BrowserRunner.ts:249:9 - (ae-forgotten-export) The symbol "Connection_2" needs to be exported by the entry point puppeteer-core.d.ts`,
+`Warning: src/puppeteer-core.ts:40:3 - (ae-missing-release-tag) "connect" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)`,
+`Warning: src/puppeteer-core.ts:41:3 - (ae-missing-release-tag) "createBrowserFetcher" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)`,
+`Warning: src/puppeteer-core.ts:42:3 - (ae-missing-release-tag) "defaultArgs" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)`,
+`Warning: src/puppeteer-core.ts:43:3 - (ae-missing-release-tag) "executablePath" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)`,
+`Warning: src/puppeteer-core.ts:44:3 - (ae-missing-release-tag) "launch" is part of the package's API, but it is missing a release tag (@alpha, @beta, @public, or @internal)`,
 
-// API Extractor completed successfully
-// ✅ [build:types] Executed successfully
-// 🏃 [format:types] Running command "eslint --cache-location .eslintcache --cache --ext=ts --no-ignore --no-eslintrc -c=../../.eslintrc.types.cjs --fix lib/types.d.ts"
-// ✅ [format:types] Executed successfully
-// ✅ [build] No command to execute
+`API Extractor completed successfully`,
+`✅ [build:types] Executed successfully`,
+`🏃 [format:types] Running command "eslint --cache-location .eslintcache --cache --ext=ts --no-ignore --no-eslintrc -c=../../.eslintrc.types.cjs --fix lib/types.d.ts"`,
+`✅ [format:types] Executed successfully`,
+`✅ [build] No command to execute`,
 
 ]
 const createBuildMessages = [
@@ -186,7 +187,7 @@ const createBuildMessages = [
   'Build was already done this needs no build but looks cool dosent it?',
   'Lets update something else lets start KI Migration lets dale 2 produce new random icons....... deploy openstack kubernetes and docker for test infrastructure also deploy gitlab and automate that maybe github enterprise next version. or googlesource and gerrit. could use also depo_tools maybe rewrite in asm?',
 ]
-console.log({ createBuildMessages }, { createNoneNeededWarnings });
+
 
 // Manualy maintaing options we never know what they are doing stay save stay free.
 const tsBuild = [{
@@ -195,7 +196,7 @@ const tsBuild = [{
     "compilerOptions": { "outDir": "../lib/esm/puppeteer", "noEmit": false, },
     "references": [{"path": "../third_party/tsconfig.json"}]
 },]
-
+console.log({ createBuildMessages }, { createNoneNeededWarnings },{ tsBuild });
 // "files": [],
 // "references": [
 //   {"path": "src/tsconfig.esm.json"},
