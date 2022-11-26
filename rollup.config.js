@@ -15,18 +15,41 @@
  * Real ESM is lexical Scoped and Static Analyzeable by default. 
  */
 
-const rollupConfig = { 
+import dts from 'rollup-plugin-dts';
+import resolve from 'rollup-plugin-node-resolve';
+import { readDir } from 'node:fs/promises';
+
+// Algin Node ESM with Browser ESM
+import * as url from 'node:url';
+const importMetaUrl = import.meta.url;
+const __filename = url.fileURLToPath(importMetaUrl);
+const __dirname = url.fileURLToPath(new URL('.', importMetaUrl));
+
+const rollupConfig = [{ 
+  input: [""],
   output: { format: 'esm', dir: '.' },
-  plugins: [{ buildStart() {
-  const puppeteerBase = './node_modules/puppeteer-core/lib/esm/puppeteer/*.js';
-  const puppeteerCore = ['revisions', 'common/Puppeteer', 'common/common', 'api/api', 'util/util'];
-  const puppeteerNode = ['node/node', 'node/PuppeteerNode'];
-  for (const importSpecifier of puppeteerCore) {
-    this.emitFile({ type: "chunk", fileName: puppeteerBase.replace('*', importSpecifier) });
-  }
-  
+  plugins: [{ async buildStart() {
+    const puppeteerBase = `${__dirname}/node_modules/puppeteer-core/lib/*`;
+    
+    // const dirEntrysPuppeteerBase = (await readDir(puppeteerBase, { rescursive: true })).flatMap(x=>x);
+    // const thirdPartyPath = puppeteerBase.replace('*', 'esm/third_party/');
+    // const dirEntrysthirdParty = dirEntrysPuppeteerBase.filter(entry => entry.startsWith(thirdPartyPath));; 
+    // // this.emitFile({ fileName: jsFile, type: "chunk" output: {file: jsFile, format: outputType},  plugins: [resolve()],   });   }
+    // const jsEntrys = dirEntrysPuppeteerBase.filter(entry => entry.endsWith(".js"));
+    // // configs.push({ input: typesFile, output: {file: typesFile, format: outputType}, plugins: [dts({respectExternal: true})],  });
+    // const dtsEntrys = dirEntrysPuppeteerBase.filter(entry => entry.endsWith(".d.ts"));
+    
+    const puppeteerResolve = puppeteerBase.replace('*', 'esm/puppeteer/*.js');
+    
+    const puppeteerCore = ['revisions', 'common/Puppeteer', 'common/common', 'api/api', 'util/util'];
+    const puppeteerNode = ['node/node', 'node/PuppeteerNode'];
+    
+    for (const importSpecifier of puppeteerCore) {
+      this.emitFile({ type: "chunk", fileName: puppeteerResolve.replace('*', importSpecifier) });
+    }
+    
   // TODO: Finish emit entrypoint.  
-  this.emitFile({ type: 'chunk', fileName: 'puppeteer-core.js',
+  this.emitFile({ type: 'chunk', name: 'puppeteer-esm',
     content: `export * from 'puppeteer-core/lib/esm/puppeteer/common/common.js';
 export { PUPPETEER_REVISIONS }
 export * from 'puppeteer-core/lib/esm/puppeteer/util/util.js';
@@ -55,6 +78,6 @@ export * from 'puppeteer-core/lib/esm/puppeteer/util/util.js';
  */
 export * from 'puppeteer-core/lib/esm/puppeteer/common/QueryHandler.js';` });
     
-}}}};
+}}}}];
 
-
+export default rollupConfig;
