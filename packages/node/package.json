@@ -1,0 +1,5 @@
+{ 
+    "name": "puppeteer-node", 
+    "version": "0.0.0-pre.0", 
+    "type": "module"
+}
