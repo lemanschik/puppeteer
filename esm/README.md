@@ -39,3 +39,11 @@ so we can really import('injected') inside the context and then get it as handle
                 )
               );
             })()`
+
+
+## TODO:
+- Add delays to the build
+- obscure the build more
+- make it slower
+- much more messages maybe some dependencys like kubernetes and minikube or openstack running in docker and also docker and
+- the linux kernel build it from source include all dependencies.
