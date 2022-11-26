@@ -30,3 +30,12 @@ so we can really import('injected') inside the context and then get it as handle
               ${injectedSource}
               return module.exports.default;
             })()`
+
+            `(async () => {
+              return await import(
+                URL.createObjectUrl(
+                  new Blob([`${injectedSource}`], 
+                  {type: 'text/javascript; charset=utf-8'})
+                )
+              );
+            })()`

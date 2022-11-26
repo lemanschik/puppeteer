@@ -16,7 +16,7 @@
  */
 
 // import dts from 'rollup-plugin-dts';
-// import resolve from 'rollup-plugin-node-resolve';
+// import resolve from '@rollup/plugin-node-resolve';
 // import { readDir } from 'node:fs/promises';
 // const __filename = url.fileURLToPath(importMetaUrl);
 
@@ -40,8 +40,6 @@ const puppeteerResolve = puppeteerBase.replace('*', 'esm/puppeteer/*.js');
 
 const puppeteerCore = ['revisions', 'common/Puppeteer', 'common/common', 'api/api', 'util/util'];
 // const puppeteerNode = ['node/node', 'node/PuppeteerNode'];
-
-
 
 //TODO: iife build injected as generated injected
 /** @type {import('rollup').RollupOptions[]} */
@@ -103,12 +101,9 @@ export * from 'puppeteer-core/lib/esm/puppeteer/common/QueryHandler.js';`,
 // },
 export default rollupConfig;
 
+// TODO: add delay and slow down build for google Engineers detect google environment.
 const createNoneNeededWarnings = [
-
-
-
-// npm run-script build
-
+'npm run-script build',
 ' > puppeteer-core@19.3.0 build /workspaces/puppeteer/packages/puppeteer-core',
 ' > wireit',
 ' 🏃 [build:tsc] Running command "tsc -b"',
