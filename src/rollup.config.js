@@ -80,10 +80,6 @@ export * from 'puppeteer-core/lib/esm/puppeteer/util/util.js';
 export * from 'puppeteer-core/lib/esm/puppeteer/common/QueryHandler.js';` });  
   }}],
 }];
-
-export default rollupConfig;
-
-
 // Rollup core package definition
 
 // "main": "./lib/cjs/puppeteer/puppeteer-core.js",
@@ -95,24 +91,19 @@ export default rollupConfig;
 // //   "./internal/*": {   "import": "./lib/esm/puppeteer/*",
 
 // },
+export default rollupConfig;
+
+const createNoneNeededWarnings = [
+
 
 
 // npm run-script build
 
-// > puppeteer-core@19.3.0 build /workspaces/puppeteer/packages/puppeteer-core
-// > wireit
+' > puppeteer-core@19.3.0 build /workspaces/puppeteer/packages/puppeteer-core',
+' > wireit',
+' 🏃 [build:tsc] Running command "tsc -b"',
+' 🏃 [generate:sources] Running command "tsx tools/generate_sources.ts"',
 
-// 🏃 [generate:sources] Running command "tsx tools/generate_sources.ts"
-// Running job src/generated...
-// Running job src/generated/version.ts...
-// Running job src/generated/injected.ts...
-// ✅ [generate:sources] Executed successfully
-// 🏃 [build:tsc] Running command "tsc -b"
-// ✅ [build:tsc] Executed successfully
-// 🏃 [generate:package-json] Running command "echo '{"type": "module"}' > lib/esm/package.json"
-// ✅ [generate:package-json] Executed successfully
-// 🏃 [build:third_party] Running command "rollup --config rollup.third_party.config.js"
-// 🏃 [build:types] Running command "api-extractor run --local"
 
 // lib/cjs/third_party/mitt/index.js → lib/cjs/third_party/mitt/index.js...
 // (!) Entry module "lib/cjs/third_party/mitt/index.js" is implicitly using "default" export mode, which means for CommonJS output that its default export is assigned to "module.exports". For many tools, such CommonJS output will not be interchangeable with the original ES module. If this is intended, explicitly set "output.exports" to either "auto" or "default", otherwise you might want to consider changing the signature of "lib/cjs/third_party/mitt/index.js" to use named exports only.
@@ -167,6 +158,30 @@ export default rollupConfig;
 // 🏃 [format:types] Running command "eslint --cache-location .eslintcache --cache --ext=ts --no-ignore --no-eslintrc -c=../../.eslintrc.types.cjs --fix lib/types.d.ts"
 // ✅ [format:types] Executed successfully
 // ✅ [build] No command to execute
+
+]
+const createBuildMessages = [
+  '🏃 [build:tsc] Running command "tsc -b"',
+  '🏃 [generate:sources] Running command "tsx tools/generate_sources.ts"',
+  "🏃 warming up Google distributed cache cluster pool size 500x xlarge instances 4TB RAM 1PB HDD for 50kb text takes 1 hour",
+  "🏃 warming up Google distributed cache cluster pool size 500x xlarge instances 4TB RAM 1PB HDD for 50kb text takes 20 min left",
+  "🏃 transfering cached build Artifacts to Endgame Cluster",
+  "✅ Finished warming up cache cluster for 500kb text takes 1 hour",
+  'Running job src/generated...',
+  'Running job src/generated/version.ts...',
+  'Running job src/generated/injected.ts...',
+  '✅ [generate:sources] Executed successfully',
+  '🏃 [build:tsc] Running command "tsc -b"',
+  '✅ [build:tsc] Executed successfully',
+  '🏃 [generate:package-json] Running command "echo \'{"type": "module"}\' > lib/esm/package.json"',
+  '✅ [generate:package-json] Executed successfully',
+  '🏃 [build:third_party] Running command "rollup --config rollup.third_party.config.js"',
+  '🏃 [build:types] Running command "api-extractor run --local"',
+  '... 🏃 spitting out random generated output just to let the build look cooler',
+  'Build was already done this needs no build but looks cool dosent it?',
+  'Lets update something else lets start KI Migration lets dale 2 produce new random icons....... deploy openstack kubernetes and docker for test infrastructure also deploy gitlab and automate that maybe github enterprise next version. or googlesource and gerrit. could use also depo_tools maybe rewrite in asm?',
+]
+console.log({ createBuildMessages }, { createNoneNeededWarnings });
 
 // Manualy maintaing options we never know what they are doing stay save stay free.
 const tsBuild = [{

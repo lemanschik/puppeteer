@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-const versionsPerRelease = new Map([
+const versionsPerReleaseTypes = /** @type {const} */ ([
   // This is a mapping from Chromium version => Puppeteer version.
   // In Chromium roll patches, use `NEXT` for the Puppeteer version.
   ['108.0.5351.0', 'v19.2.0'],
@@ -52,16 +52,19 @@ const versionsPerRelease = new Map([
   ['73.0.3679.0', 'v1.12.2'],
 ]);
 
+const versionsPerReleaseMap = new Map(versionsPerReleaseTypes);
+
 // The same major version as the current Chrome Stable per https://chromestatus.com/roadmap.
 const lastMaintainedChromiumVersion = '106.0.5249.0';
 
-if (!versionsPerRelease.has(lastMaintainedChromiumVersion)) {
+if (!versionsPerReleaseMap.has(lastMaintainedChromiumVersion)) {
   throw new Error(
-    'lastMaintainedChromiumVersion is missing from versionsPerRelease'
+    'lastMaintainedChromiumVersion is missing from versionsPerReleaseMap'
   );
 }
 
-module.exports = {
-  versionsPerRelease,
+export {
+  versionsPerReleaseTypes,
+  versionsPerReleaseMap as versionsPerRelease,
   lastMaintainedChromiumVersion,
 };
