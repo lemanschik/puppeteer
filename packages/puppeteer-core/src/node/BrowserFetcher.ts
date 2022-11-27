@@ -13,29 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { 
+  exec, unameR, format,
+  fsModule, 
+  pathModule,
+  netModule,
+} from './node-deps.js';
 
-import {exec as execChildProcess} from 'child_process';
-import extractZip from 'extract-zip';
-import {createReadStream, createWriteStream, existsSync, readdirSync} from 'fs';
-import {chmod, mkdir, readdir, unlink} from 'fs/promises';
-import * as http from 'http';
-import * as https from 'https';
+const {
+  createReadStream, createWriteStream, existsSync, readdirSync,
+  chmod, mkdir, readdir, unlink, tarExtract, bzip, extractZip, rimraf
+} = fsModule;
+
+const { getProxyForUrl 
+  //createHttpsProxyAgent,  http, https 
+} = netModule;
+import * as http from 'node:http';
+import * as https from 'node:https';
+import URL from 'node:url'
 import createHttpsProxyAgent, {
-  HttpsProxyAgent,
+  //HttpsProxyAgent,
   HttpsProxyAgentOptions,
 } from 'https-proxy-agent';
-import * as os from 'os';
-import * as path from 'path';
-import {getProxyForUrl} from 'proxy-from-env';
-import removeRecursive from 'rimraf';
-import tar from 'tar-fs';
-import bzip from 'unbzip2-stream';
-import * as URL from 'url';
-import * as util from 'util';
-import {promisify} from 'util';
+
 import {debug} from '../common/Debug.js';
 import {Product} from '../common/Product.js';
 import {assert} from '../util/assert.js';
+//import createHttpsProxyAgent from 'https-proxy-agent';
+
+
 
 const debugFetcher = debug('puppeteer:fetcher');
 
@@ -64,7 +70,7 @@ const browserConfig = {
   },
 } as const;
 
-const exec = promisify(execChildProcess);
+// const exec = promisify(execChildProcess);
 
 /**
  * Supported platforms.
@@ -104,7 +110,7 @@ function downloadURL(
   host: string,
   revision: string
 ): string {
-  const url = util.format(
+  const url = format(
     downloadURLs[product][platform],
     host,
     revision,
@@ -233,13 +239,13 @@ export class BrowserFetcher {
     if (options.platform) {
       this.#platform = options.platform;
     } else {
-      const platform = os.platform();
+      const platform = process.platform;
       switch (platform) {
         case 'darwin':
           switch (this.#product) {
             case 'chrome':
               this.#platform =
-                os.arch() === 'arm64' && options.useMacOSARMBinary
+                process.arch === 'arm64' && options.useMacOSARMBinary
                   ? 'mac_arm'
                   : 'mac';
               break;
@@ -253,9 +259,9 @@ export class BrowserFetcher {
           break;
         case 'win32':
           this.#platform =
-            os.arch() === 'x64' ||
+            process.arch === 'x64' ||
             // Windows 11 for ARM supports x64 emulation
-            (os.arch() === 'arm64' && isWindows11(os.release()))
+            (process.arch === 'arm64' && isWindows11(unameR))
               ? 'win64'
               : 'win32';
           return;
@@ -317,7 +323,7 @@ export class BrowserFetcher {
         },
         false
       );
-      request.on('error', error => {
+      request.on('error', /** @type {unknown} */ (error: unknown)  => {
         console.error(error);
         resolve(false);
       });
@@ -346,7 +352,7 @@ export class BrowserFetcher {
     );
     const fileName = url.split('/').pop();
     assert(fileName, `A malformed download URL was found: ${url}.`);
-    const archivePath = path.join(this.#downloadPath, fileName);
+    const archivePath = pathModule.join(this.#downloadPath, fileName);
     const outputPath = this.#getFolderPath(revision);
     if (existsSync(outputPath)) {
       return this.revisionInfo(revision);
@@ -356,7 +362,7 @@ export class BrowserFetcher {
     }
 
     // Use system Chromium builds on Linux ARM devices
-    if (os.platform() === 'linux' && os.arch() === 'arm64') {
+    if (process.platform === 'linux' && process.arch === 'arm64') {
       handleArm64();
       return;
     }
@@ -412,7 +418,7 @@ export class BrowserFetcher {
       `Failed to remove: revision ${revision} is not downloaded`
     );
     await new Promise(fulfill => {
-      return removeRecursive(folderPath, fulfill);
+      return rimraf(folderPath, fulfill);
     });
   }
 
@@ -428,7 +434,7 @@ export class BrowserFetcher {
         switch (this.#platform) {
           case 'mac':
           case 'mac_arm':
-            executablePath = path.join(
+            executablePath = pathModule.join(
               folderPath,
               archiveName(this.#product, this.#platform, revision),
               'Chromium.app',
@@ -438,7 +444,7 @@ export class BrowserFetcher {
             );
             break;
           case 'linux':
-            executablePath = path.join(
+            executablePath = pathModule.join(
               folderPath,
               archiveName(this.#product, this.#platform, revision),
               'chrome'
@@ -446,7 +452,7 @@ export class BrowserFetcher {
             break;
           case 'win32':
           case 'win64':
-            executablePath = path.join(
+            executablePath = pathModule.join(
               folderPath,
               archiveName(this.#product, this.#platform, revision),
               'chrome.exe'
@@ -458,7 +464,7 @@ export class BrowserFetcher {
         switch (this.#platform) {
           case 'mac':
           case 'mac_arm':
-            executablePath = path.join(
+            executablePath = pathModule.join(
               folderPath,
               'Firefox Nightly.app',
               'Contents',
@@ -467,11 +473,11 @@ export class BrowserFetcher {
             );
             break;
           case 'linux':
-            executablePath = path.join(folderPath, 'firefox', 'firefox');
+            executablePath = pathModule.join(folderPath, 'firefox', 'firefox');
             break;
           case 'win32':
           case 'win64':
-            executablePath = path.join(folderPath, 'firefox', 'firefox.exe');
+            executablePath = pathModule.join(folderPath, 'firefox', 'firefox.exe');
             break;
         }
     }
@@ -502,7 +508,7 @@ export class BrowserFetcher {
   }
 
   #getFolderPath(revision: string): string {
-    return path.resolve(this.#downloadPath, `${this.#platform}-${revision}`);
+    return pathModule.resolve(this.#downloadPath, `${this.#platform}-${revision}`);
   }
 }
 
@@ -510,7 +516,7 @@ function parseFolderPath(
   product: Product,
   folderPath: string
 ): {product: string; platform: string; revision: string} | undefined {
-  const name = path.basename(folderPath);
+  const name = pathModule.basename(folderPath);
   const splits = name.split('-');
   if (splits.length !== 2) {
     return;
@@ -583,7 +589,7 @@ function _downloadFile(
       response.on('data', onData);
     }
   });
-  request.on('error', error => {
+  request.on('error', (error: Error) => {
     return reject(error);
   });
   return promise;
@@ -613,7 +619,7 @@ async function install(archivePath: string, folderPath: string): Promise<void> {
  */
 function extractTar(tarPath: string, folderPath: string): Promise<void> {
   return new Promise((fulfill, reject) => {
-    const tarStream = tar.extract(folderPath);
+    const tarStream = tarExtract(folderPath);
     tarStream.on('error', reject);
     tarStream.on('finish', fulfill);
     const readStream = createReadStream(tarPath);
@@ -628,7 +634,7 @@ async function installDMG(dmgPath: string, folderPath: string): Promise<void> {
   const {stdout} = await exec(
     `hdiutil attach -nobrowse -noautoopen "${dmgPath}"`
   );
-
+  // @ts-ignore
   const volumes = stdout.match(/\/Volumes\/(.*)/m);
   if (!volumes) {
     throw new Error(`Could not find volume path in ${stdout}`);
@@ -643,7 +649,7 @@ async function installDMG(dmgPath: string, folderPath: string): Promise<void> {
     if (!appName) {
       throw new Error(`Cannot find app in ${mountPath}`);
     }
-    const mountedPath = path.join(mountPath!, appName);
+    const mountedPath = pathModule.join(mountPath!, appName);
 
     debugFetcher(`Copying ${mountedPath} to ${folderPath}`);
     await exec(`cp -R "${mountedPath}" "${folderPath}"`);
@@ -659,11 +665,12 @@ function httpRequest(
   response: (x: http.IncomingMessage) => void,
   keepAlive = true
 ): http.ClientRequest {
+  // @ts-ignore
   const urlParsed = URL.parse(url);
 
   type Options = Partial<URL.UrlWithStringQuery> & {
     method?: string;
-    agent?: HttpsProxyAgent;
+    agent?: typeof createHttpsProxyAgent;
     rejectUnauthorized?: boolean;
     headers?: http.OutgoingHttpHeaders | undefined;
   };
@@ -690,7 +697,7 @@ function httpRequest(
         ...parsedProxyURL,
         secureProxy: parsedProxyURL.protocol === 'https:',
       } as HttpsProxyAgentOptions;
-
+      // @ts-ignore
       options.agent = createHttpsProxyAgent(proxyOptions);
       options.rejectUnauthorized = false;
     }
@@ -710,8 +717,10 @@ function httpRequest(
   };
   const request =
     options.protocol === 'https:'
-      ? https.request(options, requestCallback)
-      : http.request(options, requestCallback);
+    // @ts-ignore  
+    ? https.request(options, requestCallback)
+    // @ts-ignore  
+    : http.request(options, requestCallback);
   request.end();
   return request;
 }

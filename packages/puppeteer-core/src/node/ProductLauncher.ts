@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {existsSync} from 'fs';
-import os, {tmpdir} from 'os';
-import {join} from 'path';
 import {Browser} from '../api/Browser.js';
 import {Product} from '../common/Product.js';
 import {BrowserFetcher} from './BrowserFetcher.js';
@@ -24,7 +21,11 @@ import {
   ChromeReleaseChannel,
   PuppeteerNodeLaunchOptions,
 } from './LaunchOptions.js';
+
 import {PuppeteerNode} from './PuppeteerNode.js';
+
+import { pathModule, tempDir, fsModule } from './node-deps.js';
+const {existsSync} = fsModule;
 
 /**
  * Describes a launcher - a class that is able to create and launch a browser instance.
@@ -70,8 +71,8 @@ export class ProductLauncher {
    * @internal
    */
   protected getProfilePath(): string {
-    return join(
-      this.puppeteer.configuration.temporaryDirectory ?? tmpdir(),
+    return pathModule.join(
+      this.puppeteer.configuration.temporaryDirectory ?? tempDir,
       `puppeteer_dev_${this.product}_profile-`
     );
   }
@@ -93,8 +94,8 @@ export class ProductLauncher {
     const ubuntuChromiumPath = '/usr/bin/chromium-browser';
     if (
       this.product === 'chrome' &&
-      os.platform() !== 'darwin' &&
-      os.arch() === 'arm64' &&
+      process.platform !== 'darwin' &&
+      process.arch === 'arm64' &&
       existsSync(ubuntuChromiumPath)
     ) {
       return ubuntuChromiumPath;
