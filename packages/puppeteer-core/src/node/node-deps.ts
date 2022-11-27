@@ -1,5 +1,3 @@
-
-
 import fs, {createReadStream, createWriteStream, existsSync, readdirSync, promises as fsPromises } from 'node:fs';
 const {chmod, mkdir, readdir, unlink} = fsPromises;
 
