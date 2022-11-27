@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import {join} from 'path';
+import {pathModule} from './node-deps.js';
+
 import {Browser} from '../api/Browser.js';
 import {BrowserConnectOptions} from '../common/BrowserConnector.js';
 import {Product} from '../common/Product.js';
@@ -229,7 +230,7 @@ export class PuppeteerNode extends Puppeteer {
   get defaultDownloadPath(): string | undefined {
     return (
       this.configuration.downloadPath ??
-      join(this.configuration.cacheDirectory!, this.product)
+      pathModule.join(this.configuration.cacheDirectory!, this.product)
     );
   }
 

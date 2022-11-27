@@ -1,15 +1,16 @@
-import {accessSync} from 'fs';
-import {mkdtemp} from 'fs/promises';
-import os from 'os';
-import path from 'path';
 import {CDPBrowser} from '../common/Browser.js';
 import {assert} from '../util/assert.js';
 import {BrowserRunner} from './BrowserRunner.js';
+
 import {
   BrowserLaunchArgumentOptions,
   ChromeReleaseChannel,
   PuppeteerNodeLaunchOptions,
 } from './LaunchOptions.js';
+
+import { pathModule, fsModule } from './node-deps.js';
+const {mkdtemp, accessSync} = fsModule;
+
 import {ProductLauncher} from './ProductLauncher.js';
 import {PuppeteerNode} from './PuppeteerNode.js';
 
@@ -197,7 +198,7 @@ export class ChromeLauncher extends ProductLauncher {
       userDataDir,
     } = options;
     if (userDataDir) {
-      chromeArguments.push(`--user-data-dir=${path.resolve(userDataDir)}`);
+      chromeArguments.push(`--user-data-dir=${pathModule.resolve(userDataDir)}`);
     }
     if (devtools) {
       chromeArguments.push('--auto-open-devtools-for-tabs');
@@ -232,7 +233,7 @@ export class ChromeLauncher extends ProductLauncher {
    * @internal
    */
   #executablePathForChannel(channel: ChromeReleaseChannel): string {
-    const platform = os.platform();
+    const platform = process.platform;
 
     let chromePath: string | undefined;
     switch (platform) {

@@ -1,18 +1,22 @@
-import fs from 'fs';
-import os from 'os';
-import path from 'path';
+
+
 import {Browser} from '../api/Browser.js';
 import {Browser as BiDiBrowser} from '../common/bidi/Browser.js';
 import {CDPBrowser} from '../common/Browser.js';
 import {assert} from '../util/assert.js';
 import {BrowserFetcher} from './BrowserFetcher.js';
 import {BrowserRunner} from './BrowserRunner.js';
+
 import {
   BrowserLaunchArgumentOptions,
   PuppeteerNodeLaunchOptions,
 } from './LaunchOptions.js';
+
 import {ProductLauncher} from './ProductLauncher.js';
 import {PuppeteerNode} from './PuppeteerNode.js';
+
+import { fsModule, pathModule } from './node-deps.js';
+const { existsSync, writeFile, copyFile, mkdtemp } = fsModule;
 
 /**
  * @internal
@@ -83,7 +87,7 @@ export class FirefoxLauncher extends ProductLauncher {
 
     if (profileArgIndex !== -1) {
       userDataDir = firefoxArguments[profileArgIndex + 1];
-      if (!userDataDir || !fs.existsSync(userDataDir)) {
+      if (!userDataDir || !existsSync(userDataDir)) {
         throw new Error(`Firefox profile not found at '${userDataDir}'`);
       }
 
@@ -211,7 +215,7 @@ export class FirefoxLauncher extends ProductLauncher {
 
     const firefoxArguments = ['--no-remote'];
 
-    switch (os.platform()) {
+    switch (process.platform) {
       case 'darwin':
         firefoxArguments.push('--foreground');
         break;
@@ -468,21 +472,21 @@ export class FirefoxLauncher extends ProductLauncher {
       return `user_pref(${JSON.stringify(key)}, ${JSON.stringify(value)});`;
     });
 
-    await fs.promises.writeFile(
-      path.join(profilePath, 'user.js'),
+    await writeFile(
+      pathModule.join(profilePath, 'user.js'),
       lines.join('\n')
     );
 
     // Create a backup of the preferences file if it already exitsts.
-    const prefsPath = path.join(profilePath, 'prefs.js');
-    if (fs.existsSync(prefsPath)) {
-      const prefsBackupPath = path.join(profilePath, 'prefs.js.puppeteer');
-      await fs.promises.copyFile(prefsPath, prefsBackupPath);
+    const prefsPath = pathModule.join(profilePath, 'prefs.js');
+    if (existsSync(prefsPath)) {
+      const prefsBackupPath = pathModule.join(profilePath, 'prefs.js.puppeteer');
+      await copyFile(prefsPath, prefsBackupPath);
     }
   }
 
   async _createProfile(extraPrefs: {[x: string]: unknown}): Promise<string> {
-    const temporaryProfilePath = await fs.promises.mkdtemp(
+    const temporaryProfilePath = await mkdtemp(
       this.getProfilePath()
     );
 

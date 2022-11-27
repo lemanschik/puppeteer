@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 import {existsSync} from 'fs';
-import os, {tmpdir} from 'os';
-import {join} from 'path';
+
 import {Browser} from '../api/Browser.js';
 import {Product} from '../common/Product.js';
 import {BrowserFetcher} from './BrowserFetcher.js';
@@ -24,6 +23,7 @@ import {
   ChromeReleaseChannel,
   PuppeteerNodeLaunchOptions,
 } from './LaunchOptions.js';
+import { pathModule, tempDir } from './node-deps.js';
 import {PuppeteerNode} from './PuppeteerNode.js';
 
 /**
@@ -70,8 +70,8 @@ export class ProductLauncher {
    * @internal
    */
   protected getProfilePath(): string {
-    return join(
-      this.puppeteer.configuration.temporaryDirectory ?? tmpdir(),
+    return pathModule.join(
+      this.puppeteer.configuration.temporaryDirectory ?? tempDir,
       `puppeteer_dev_${this.product}_profile-`
     );
   }
@@ -93,8 +93,8 @@ export class ProductLauncher {
     const ubuntuChromiumPath = '/usr/bin/chromium-browser';
     if (
       this.product === 'chrome' &&
-      os.platform() !== 'darwin' &&
-      os.arch() === 'arm64' &&
+      process.platform !== 'darwin' &&
+      process.arch === 'arm64' &&
       existsSync(ubuntuChromiumPath)
     ) {
       return ubuntuChromiumPath;
