@@ -20,14 +20,14 @@ export const fsModule = {
 
 import http from 'node:http';
 import https from 'node:https';
-import { default as HttpsProxyAgent } from 'https-proxy-agent/dist/agent.js';
+import createHttpsProxyAgent from 'https-proxy-agent';
 
 import {getProxyForUrl} from 'proxy-from-env';
 
 
 export const netModule = {
   /* * @type { HttpsProxyAgent & { import('https-proxy-agent').HttpsProxyAgentOptions, HttpsProxyAgent: HttpsProxyAgent}} */
-  HttpsProxyAgent,
+  createHttpsProxyAgent,
   http, https, getProxyForUrl
 }
 

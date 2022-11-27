@@ -25,11 +25,23 @@ const {
   chmod, mkdir, readdir, unlink, tarExtract, bzip, extractZip, rimraf
 } = fsModule;
 
-const { HttpsProxyAgent, HttpsProxyAgentOptions ,getProxyForUrl , http, https } = netModule;
+const { getProxyForUrl 
+  //createHttpsProxyAgent,  http, https 
+} = netModule;
+import * as http from 'node:http';
+import * as https from 'node:https';
+import URL from 'node:url'
+import createHttpsProxyAgent, {
+  //HttpsProxyAgent,
+  HttpsProxyAgentOptions,
+} from 'https-proxy-agent';
 
 import {debug} from '../common/Debug.js';
 import {Product} from '../common/Product.js';
 import {assert} from '../util/assert.js';
+//import createHttpsProxyAgent from 'https-proxy-agent';
+
+
 
 const debugFetcher = debug('puppeteer:fetcher');
 
@@ -622,7 +634,7 @@ async function installDMG(dmgPath: string, folderPath: string): Promise<void> {
   const {stdout} = await exec(
     `hdiutil attach -nobrowse -noautoopen "${dmgPath}"`
   );
-
+  // @ts-ignore
   const volumes = stdout.match(/\/Volumes\/(.*)/m);
   if (!volumes) {
     throw new Error(`Could not find volume path in ${stdout}`);
@@ -650,14 +662,15 @@ async function installDMG(dmgPath: string, folderPath: string): Promise<void> {
 function httpRequest(
   url: string,
   method: string,
-  response: (x: typeof http.IncomingMessage) => void,
+  response: (x: http.IncomingMessage) => void,
   keepAlive = true
-): typeof http.ClientRequest {
-  const urlParsed = new URL(url);
+): http.ClientRequest {
+  // @ts-ignore
+  const urlParsed = URL.parse(url);
 
   type Options = Partial<URL.UrlWithStringQuery> & {
     method?: string;
-    agent?: typeof HttpsProxyAgent;
+    agent?: typeof createHttpsProxyAgent;
     rejectUnauthorized?: boolean;
     headers?: http.OutgoingHttpHeaders | undefined;
   };
@@ -671,26 +684,26 @@ function httpRequest(
   const proxyURL = getProxyForUrl(url);
   if (proxyURL) {
     if (url.startsWith('http:')) {
-      const proxy = new URL(proxyURL);
+      const proxy = URL.parse(proxyURL);
       options = {
         path: options.href,
         host: proxy.hostname,
         port: proxy.port,
       };
     } else {
-      const parsedProxyURL = new URL(proxyURL);
+      const parsedProxyURL = URL.parse(proxyURL);
 
       const proxyOptions = {
         ...parsedProxyURL,
         secureProxy: parsedProxyURL.protocol === 'https:',
-      };
-
-      options.agent = new HttpsProxyAgent(proxyOptions);
+      } as HttpsProxyAgentOptions;
+      // @ts-ignore
+      options.agent = createHttpsProxyAgent(proxyOptions);
       options.rejectUnauthorized = false;
     }
   }
 
-  const requestCallback = (res: typeof http.IncomingMessage): void => {
+  const requestCallback = (res: http.IncomingMessage): void => {
     if (
       res.statusCode &&
       res.statusCode >= 300 &&
@@ -704,8 +717,10 @@ function httpRequest(
   };
   const request =
     options.protocol === 'https:'
-      ? https.request(options, requestCallback)
-      : http.request(options, requestCallback);
+    // @ts-ignore  
+    ? https.request(options, requestCallback)
+    // @ts-ignore  
+    : http.request(options, requestCallback);
   request.end();
   return request;
 }

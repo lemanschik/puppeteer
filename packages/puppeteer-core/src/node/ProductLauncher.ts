@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {existsSync} from 'fs';
-
 import {Browser} from '../api/Browser.js';
 import {Product} from '../common/Product.js';
 import {BrowserFetcher} from './BrowserFetcher.js';
@@ -23,8 +21,11 @@ import {
   ChromeReleaseChannel,
   PuppeteerNodeLaunchOptions,
 } from './LaunchOptions.js';
-import { pathModule, tempDir } from './node-deps.js';
+
 import {PuppeteerNode} from './PuppeteerNode.js';
+
+import { pathModule, tempDir, fsModule } from './node-deps.js';
+const {existsSync} = fsModule;
 
 /**
  * Describes a launcher - a class that is able to create and launch a browser instance.

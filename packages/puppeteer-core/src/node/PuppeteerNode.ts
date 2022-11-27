@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import {pathModule} from './node-deps.js';
-
 import {Browser} from '../api/Browser.js';
 import {BrowserConnectOptions} from '../common/BrowserConnector.js';
 import {Product} from '../common/Product.js';
+
 import {
   CommonPuppeteerSettings,
   ConnectOptions,
   Puppeteer,
 } from '../common/Puppeteer.js';
+
 import {Configuration} from '../common/Configuration.js';
 import {PUPPETEER_REVISIONS} from '../revisions.js';
 import {BrowserFetcher, BrowserFetcherOptions} from './BrowserFetcher.js';
@@ -34,7 +33,10 @@ import {
   ChromeReleaseChannel,
   LaunchOptions,
 } from './LaunchOptions.js';
+
 import {ProductLauncher} from './ProductLauncher.js';
+
+import {pathModule} from './node-deps.js';
 
 /**
  * @public
