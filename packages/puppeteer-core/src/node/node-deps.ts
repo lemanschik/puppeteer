@@ -4,11 +4,9 @@ const {chmod, mkdir, readdir, unlink} = fsPromises;
 import { default as rimraf } from 'rimraf';
 export {rimraf}
 
-import * as extractZip from 'extract-zip';
+import { default as extractZip } from 'extract-zip';
 import { extract } from 'tar-fs';
-import * as bzip from 'unbzip2-stream';
-
-export { bzip };
+import { default as bzip } from 'unbzip2-stream';
 
 import { join, basename, resolve } from 'node:path';
 export const pathModule = { join, basename, resolve };
@@ -22,13 +20,14 @@ export const fsModule = {
 
 import http from 'node:http';
 import https from 'node:https';
-import createHttpsProxyAgent from 'https-proxy-agent';
+import { default as HttpsProxyAgent } from 'https-proxy-agent/dist/agent.js';
+
 import {getProxyForUrl} from 'proxy-from-env';
 
+
 export const netModule = {
-  createHttpsProxyAgent,
-  HttpsProxyAgent: createHttpsProxyAgent.HttpsProxyAgent,
-  HttpsProxyAgentOptions: createHttpsProxyAgent.HttpsProxyAgentOptions,
+  /* * @type { HttpsProxyAgent & { import('https-proxy-agent').HttpsProxyAgentOptions, HttpsProxyAgent: HttpsProxyAgent}} */
+  HttpsProxyAgent,
   http, https, getProxyForUrl
 }
 

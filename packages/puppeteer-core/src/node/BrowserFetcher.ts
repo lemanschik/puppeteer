@@ -25,7 +25,7 @@ const {
   chmod, mkdir, readdir, unlink, tarExtract, bzip, extractZip, rimraf
 } = fsModule;
 
-const { createHttpsProxyAgent, HttpsProxyAgent, HttpsProxyAgentOptions ,getProxyForUrl , http, https } = netModule;
+const { HttpsProxyAgent, HttpsProxyAgentOptions ,getProxyForUrl , http, https } = netModule;
 
 import {debug} from '../common/Debug.js';
 import {Product} from '../common/Product.js';
@@ -659,7 +659,7 @@ function httpRequest(
     method?: string;
     agent?: typeof HttpsProxyAgent;
     rejectUnauthorized?: boolean;
-    headers?: typeof http.OutgoingHttpHeaders | undefined;
+    headers?: http.OutgoingHttpHeaders | undefined;
   };
 
   let options: Options = {
@@ -683,14 +683,14 @@ function httpRequest(
       const proxyOptions = {
         ...parsedProxyURL,
         secureProxy: parsedProxyURL.protocol === 'https:',
-      } as typeof HttpsProxyAgentOptions;
+      };
 
-      options.agent = createHttpsProxyAgent(proxyOptions);
+      options.agent = new HttpsProxyAgent(proxyOptions);
       options.rejectUnauthorized = false;
     }
   }
 
-  const requestCallback = (res: http.IncomingMessage): void => {
+  const requestCallback = (res: typeof http.IncomingMessage): void => {
     if (
       res.statusCode &&
       res.statusCode >= 300 &&
