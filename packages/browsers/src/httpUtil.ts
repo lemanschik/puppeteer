@@ -9,7 +9,7 @@ import * as http from 'node:http';
 import * as https from 'node:https';
 import {URL, urlToHttpOptions} from 'node:url';
 
-import {ProxyAgent} from 'proxy-agent';
+import {ProxyAgent} from './httpUtilProxyAgent';
 
 export function headHttpRequest(url: URL): Promise<boolean> {
   return new Promise(resolve => {
