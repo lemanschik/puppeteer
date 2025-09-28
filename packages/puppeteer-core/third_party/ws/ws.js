@@ -1,6 +1,6 @@
 // TODO: remove this whole package once https://github.com/websockets/ws/pull/2299 landed.
 // we get wrapper.mjs which has nested defaults
-import * as wrapperWebSocket from 'cjs-ws';
+import * as wrapperWebSocket from 'ws';
 
 const createWebSocketStream = wrapperWebSocket.createWebSocketStream.default;
 const Receiver = wrapperWebSocket.Receiver.default;
