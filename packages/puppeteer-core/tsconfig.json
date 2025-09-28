@@ -3,5 +3,6 @@
   "files": [],
   "references": [
     {"path": "./src/tsconfig.esm.json"},
+    {"path": "./third_party"},
   ]
 }
