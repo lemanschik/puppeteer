@@ -10,3 +10,4 @@ const WebSocketServer = wrapperWebSocket.WebSocketServer.default;
 
 export { createWebSocketStream, Receiver, Sender, WebSocket, WebSocketServer };
 export default WebSocket;
+export type * from 'ws';;
