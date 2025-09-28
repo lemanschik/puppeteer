@@ -2,6 +2,7 @@
   "type": "module",
   "main": "debug.js",
   "dependencies": {
-    "debug": "npm:debug@^4.4.3"
+    "debug": "npm:debug@^4.4.3",
+    "@types/debug": "*"
   }
 }
